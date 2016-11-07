@@ -19,28 +19,35 @@ struct ToyBin {
     // TODO: Implement all of the sort functions (lets organize this toy bin!)
     
     mutating func sortShips() {
-       let sortedShips = ships.sorted { (ship1, ship2) -> Bool in
+        let sortedShips = ships.sorted { (ship1, ship2) -> Bool in
             return ship1.age > ship2.age
         }
-       self.ships = sortedShips
+        self.ships = sortedShips
         
     }
     
+    mutating func sortBooks() {
+        
+        books = books.sorted {$0.name < $1.name}
+    
+    }
+    
     mutating func sortBowlingPins() {
-        let sortedBowlingPins = bowlingPins.sorted { (pin1, pin2) -> Bool in
-            
-        }
+        let sortedBowlingPins = bowlingPins.sorted { $0.color.rawValue < $1.color.rawValue }
+        
+        bowlingPins = sortedBowlingPins
+       
     }
     
     mutating func sortMusicCDs() {
-    let sortedMusicCDs = musicCDs.sorted { (musicCD1, musicCD2) -> Bool in
-        switch musicCD1.name    {
+        let sortedMusicCDs = musicCDs.sorted { (musicCD1, musicCD2) -> Bool in
+            switch musicCD1.name    {
             case "Drank":
-            musicCDs.insert(musicCD1, at: 0)
-            return true
-        default:
-          return musicCD1.name > musicCD2.name
-        }
+                musicCDs.insert(musicCD1, at: 0)
+                return true
+            default:
+                return musicCD1.name > musicCD2.name
+            }
         }
         
         self.musicCDs = sortedMusicCDs
@@ -48,13 +55,18 @@ struct ToyBin {
     
     mutating func changeColorOfAllPins(to color: Color) {
         
-        var changedPins = bowlingPins.map { (bowlingpin) -> BowlingPin in
-        bowlingpin.changeColor(to: color)
+        let changedPins = bowlingPins.map { (pin) -> BowlingPin in
+            
+            var newPin = pin
+            
+            newPin.changeColor(to: color)
+            
+            return pin
         }
         
         bowlingPins = changedPins
     }
- 
+    
 }
 
 
@@ -86,7 +98,7 @@ extension BowlingPin {
 
 
 enum Color: Int {
-    case red, organe, yellow, green, blue, indigo, violet
+    case red, orange, yellow, green, blue, indigo, violet
 }
 
 struct MusicCD {
